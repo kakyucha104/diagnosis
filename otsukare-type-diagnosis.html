@@ -640,7 +640,7 @@
     </div>
 
     <div class="toast" id="toast">
-      ✅ タイプ名をコピーしました！<br>LINEを開いたら貼り付けて送ってください
+      ✅ タイプ名をコピーしました！<br>LINEを開いて貼り付けて送ると<br>詳しい分析が届きます🌿
     </div>
 
     <div class="retry-wrap r-anim" style="animation-delay:.52s">
@@ -833,7 +833,7 @@
   let currentType = '';
 
   function openLine() {
-    const msg = `【お疲れタイプ診断結果】\n私は「${currentType}」でした！\nさらに詳しく教えてください✨`;
+    const msg = currentType;
     navigator.clipboard.writeText(msg).then(() => {
       showToast();
     }).catch(() => {
