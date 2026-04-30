@@ -505,6 +505,32 @@
     @media (min-width: 480px) {
       .screen { border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
     }
+
+    /* =================== TOAST =================== */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #333;
+      color: #fff;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 14px 20px;
+      border-radius: 12px;
+      text-align: center;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 999;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -607,10 +633,14 @@
     </div>
 
     <div class="r-anim" style="animation-delay:.4s">
-      <a href="https://lin.ee/qUvyFAp" class="btn-line" target="_blank" rel="noopener noreferrer">
+      <button class="btn-line" onclick="openLine()">
         さらに深く自分と向き合う
         <span class="btn-line-sub">公式LINEへ → 無料でご相談できます</span>
-      </a>
+      </button>
+    </div>
+
+    <div class="toast" id="toast">
+      ✅ タイプ名をコピーしました！<br>LINEを開いたら貼り付けて送ってください
     </div>
 
     <div class="retry-wrap r-anim" style="animation-delay:.52s">
@@ -800,9 +830,30 @@
   // ============================================================
   //  RESULT DISPLAY
   // ============================================================
+  let currentType = '';
+
+  function openLine() {
+    const msg = `【お疲れタイプ診断結果】\n私は「${currentType}」でした！\nさらに詳しく教えてください✨`;
+    navigator.clipboard.writeText(msg).then(() => {
+      showToast();
+    }).catch(() => {
+      showToast(); // クリップボードが使えない環境でもLINEは開く
+    });
+    setTimeout(() => {
+      window.open('https://lin.ee/qUvyFAp', '_blank');
+    }, 600);
+  }
+
+  function showToast() {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+
   function showResult() {
     const type = calcResult();
     const d    = resultData[type];
+    currentType = d.name;
 
     document.getElementById('res-type').textContent    = d.name;
     document.getElementById('res-feature').textContent = d.feature;
