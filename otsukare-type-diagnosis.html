@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お疲れタイプ別・魅力再発見診断 | Courage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* =================== CSS VARIABLES =================== */
+    :root {
+      --bg:            #F9F9F6;
+      --bg-card:       #FFFFFF;
+      --text:          #333333;
+      --text-light:    #7A7A7A;
+      --text-muted:    #ADADAD;
+      --sage:          #7BA898;
+      --sage-light:    #B8D4CC;
+      --sage-pale:     #EBF4F1;
+      --sage-dark:     #568E7C;
+      --lavender:      #C4AEDD;
+      --lavender-pale: #F0E8F8;
+      --border:        #E6E6E2;
+      --shadow-sm:     0 2px 12px rgba(0,0,0,0.06);
+      --shadow-md:     0 6px 24px rgba(0,0,0,0.09);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* =================== DECORATIVE BG =================== */
+    .deco {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .deco-1 {
+      width: 380px; height: 380px;
+      background: radial-gradient(circle, rgba(123,168,152,0.10) 0%, transparent 65%);
+      top: -80px; right: -100px;
+    }
+    .deco-2 {
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(196,174,221,0.12) 0%, transparent 65%);
+      bottom: 80px; left: -80px;
+    }
+    .deco-3 {
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(123,168,152,0.07) 0%, transparent 65%);
+      bottom: 40px; right: 20px;
+    }
+
+    /* =================== SCREENS =================== */
+    .screen {
+      display: none;
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      padding: 0 22px 56px;
+      flex-direction: column;
+      position: relative;
+      z-index: 1;
+    }
+    .screen.active {
+      display: flex;
+      animation: screenIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes screenIn {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =================== TOP SCREEN =================== */
+    .top-brand {
+      text-align: center;
+      padding: 52px 0 8px;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      color: var(--text-muted);
+    }
+
+    .top-icon-wrap {
+      text-align: center;
+      padding: 32px 0 24px;
+    }
+    .top-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sage-pale), var(--lavender-pale));
+      font-size: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .top-ornament {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 auto 20px;
+      width: 140px;
+    }
+    .top-ornament span {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--sage-light));
+    }
+    .top-ornament span:last-child {
+      background: linear-gradient(90deg, var(--sage-light), transparent);
+    }
+    .top-ornament em {
+      font-style: normal;
+      font-size: 12px;
+      color: var(--sage);
+    }
+
+    .top-title {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 400;
+      font-size: 22px;
+      line-height: 1.75;
+      text-align: center;
+      letter-spacing: 0.03em;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .top-title strong {
+      color: var(--sage-dark);
+      font-weight: 600;
+    }
+
+    .top-catch {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 36px;
+    }
+
+    .top-desc {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 26px 22px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .top-desc p {
+      font-size: 14px;
+      line-height: 1.95;
+      color: var(--text-light);
+      margin-bottom: 12px;
+    }
+    .top-desc p:last-child { margin-bottom: 0; }
+
+    .top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--sage-dark);
+      background: var(--sage-pale);
+      border-radius: 100px;
+      padding: 8px 18px;
+      margin: 0 auto 32px;
+      width: fit-content;
+    }
+
+    /* =================== BUTTONS =================== */
+    .btn-primary {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, var(--sage), var(--sage-dark));
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      padding: 19px 28px;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.28s ease;
+      box-shadow: 0 5px 22px rgba(90,142,124,0.38);
+      text-align: center;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(90,142,124,0.48);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      padding: 8px 0;
+      transition: color 0.2s;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .btn-back:hover { color: var(--sage); }
+    .btn-back svg { transition: transform 0.2s; }
+    .btn-back:hover svg { transform: translateX(-3px); }
+
+    /* =================== QUESTION SCREEN =================== */
+    .q-header { padding: 30px 0 20px; }
+
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .progress-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+    .progress-pct {
+      font-size: 11px;
+      color: var(--sage);
+      font-weight: 500;
+    }
+    .progress-track {
+      height: 3px;
+      background: var(--border);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, var(--sage), var(--lavender));
+      transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .q-num {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      color: var(--sage);
+      margin-bottom: 14px;
+    }
+
+    .q-text {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 1.85;
+      color: var(--text);
+      letter-spacing: 0.02em;
+      min-height: 80px;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      margin: 30px 0 28px;
+    }
+
+    .choice-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      text-align: left;
+      width: 100%;
+    }
+    .choice-btn:hover {
+      border-color: var(--sage-light);
+      background: var(--sage-pale);
+      transform: translateX(4px);
+    }
+    .choice-btn.selected {
+      border-color: var(--sage);
+      background: var(--sage-pale);
+    }
+    .choice-btn:active { transform: translateX(2px); }
+
+    .choice-dot {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.22s;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'Noto Serif JP', serif;
+    }
+    .choice-btn.selected .choice-dot {
+      background: var(--sage);
+      border-color: var(--sage);
+      color: #fff;
+    }
+    .choice-btn.selected .choice-dot::after {
+      content: '✓';
+      font-size: 14px;
+    }
+    .choice-btn:not(.selected) .choice-dot-num { display: block; }
+    .choice-btn.selected .choice-dot-num { display: none; }
+
+    .choice-label {
+      font-size: 14px;
+      line-height: 1.4;
+      color: var(--text);
+    }
+
+    .q-nav {
+      display: flex;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* =================== RESULT SCREEN =================== */
+    .result-screen { padding-bottom: 64px; }
+
+    .result-top {
+      text-align: center;
+      padding: 52px 0 32px;
+    }
+
+    .result-badge {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--sage-dark);
+      background: var(--sage-pale);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 22px;
+    }
+
+    .result-type {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 25px;
+      font-weight: 500;
+      line-height: 1.55;
+      color: var(--text);
+      letter-spacing: 0.02em;
+      margin-bottom: 14px;
+    }
+
+    .result-rule {
+      width: 36px; height: 2px;
+      background: linear-gradient(90deg, var(--sage), var(--lavender));
+      margin: 0 auto 4px;
+      border-radius: 2px;
+    }
+
+    .result-cards { display: flex; flex-direction: column; gap: 14px; }
+
+    .rcard {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 26px 22px;
+      box-shadow: var(--shadow-sm);
+    }
+    .rcard-charm {
+      background: linear-gradient(145deg, #F5F0FC, #EBF4F1);
+      border-color: #E0D4F0;
+    }
+    .rcard-step {
+      background: #FDFCF7;
+      border: 1.5px dashed var(--sage-light);
+    }
+
+    .rcard-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--sage);
+      margin-bottom: 12px;
+    }
+    .rcard-label-charm { color: #9B7EC8; }
+    .rcard-label::before {
+      content: '';
+      display: block;
+      width: 18px; height: 1.5px;
+      background: currentColor;
+      border-radius: 2px;
+    }
+
+    .rcard-text {
+      font-size: 14.5px;
+      line-height: 1.9;
+      color: var(--text);
+    }
+
+    .rcard-step-text {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--text);
+    }
+
+    .btn-line {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+      color: #fff;
+      border: none;
+      border-radius: 100px;
+      padding: 20px 28px;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.07em;
+      cursor: pointer;
+      transition: all 0.28s ease;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 6px 26px rgba(86,142,124,0.42);
+      margin-top: 32px;
+      line-height: 1.4;
+    }
+    .btn-line:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(86,142,124,0.52);
+    }
+    .btn-line-sub {
+      display: block;
+      font-size: 11px;
+      opacity: 0.82;
+      margin-top: 5px;
+      letter-spacing: 0.04em;
+    }
+
+    .retry-wrap {
+      text-align: center;
+      margin-top: 22px;
+    }
+    .btn-retry {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      padding: 12px 32px;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.22s;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .btn-retry:hover {
+      border-color: var(--sage-light);
+      color: var(--sage-dark);
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      padding: 18px 0 0;
+    }
+
+    /* =================== RESULT ANIMATIONS =================== */
+    .r-anim {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    @keyframes rReveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .r-anim.on {
+      animation: rReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* =================== RESPONSIVE =================== */
+    @media (min-width: 480px) {
+      .screen { border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deco deco-1"></div>
+  <div class="deco deco-2"></div>
+  <div class="deco deco-3"></div>
+
+  <!-- ========================================================
+       TOP SCREEN
+  ======================================================== -->
+  <div id="screen-top" class="screen active">
+    <div class="top-brand">Courage &times; perche</div>
+
+    <div class="top-icon-wrap">
+      <div class="top-icon">🌿</div>
+    </div>
+
+    <div class="top-ornament">
+      <span></span><em>✦</em><span></span>
+    </div>
+
+    <h1 class="top-title">
+      今のあなたの<br>
+      <strong>「お疲れタイプ」</strong>別<br>
+      魅力再発見診断
+    </h1>
+    <p class="top-catch">10の質問で、あなたの本音に気づく時間</p>
+
+    <div class="top-desc">
+      <p>仕事も家事も一生懸命なのに、なんとなく満たされない……</p>
+      <p>それは、頑張りすぎているあなたが、<br>自分自身の声を聞き忘れているサインかもしれません。</p>
+      <p>この診断では、今のあなたの「お疲れパターン」と、その奥に眠る魅力を一緒に探します。</p>
+    </div>
+
+    <div class="top-meta">
+      📋&thinsp;所要時間 約3分・全10問
+    </div>
+
+    <button class="btn-primary" onclick="startDiagnosis()">
+      ✦ 診断をスタートする
+    </button>
+    <p class="footer-note" style="margin-top:18px;">あなたの回答は診断のみに使用されます</p>
+  </div>
+
+  <!-- ========================================================
+       QUESTION SCREEN
+  ======================================================== -->
+  <div id="screen-question" class="screen">
+    <div class="q-header">
+      <div class="progress-row">
+        <span class="progress-label" id="p-label">質問 1 / 10</span>
+        <span class="progress-pct" id="p-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="p-fill" style="width:6%"></div>
+      </div>
+    </div>
+
+    <div class="q-num" id="q-num">Q 01</div>
+    <div class="q-text" id="q-text"></div>
+
+    <div class="choices" id="choices"></div>
+
+    <div class="q-nav">
+      <button class="btn-back" id="btn-back" onclick="goBack()" style="visibility:hidden">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        前の質問に戻る
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       RESULT SCREEN
+  ======================================================== -->
+  <div id="screen-result" class="screen result-screen">
+    <div class="result-top r-anim">
+      <div class="result-badge">あなたのタイプが見つかりました</div>
+      <h2 class="result-type" id="res-type"></h2>
+      <div class="result-rule"></div>
+    </div>
+
+    <div class="result-cards">
+      <div class="rcard r-anim" style="animation-delay:.08s">
+        <div class="rcard-label">今のあなたの状態</div>
+        <p class="rcard-text" id="res-feature"></p>
+      </div>
+
+      <div class="rcard rcard-charm r-anim" style="animation-delay:.18s">
+        <div class="rcard-label rcard-label-charm">あなたの隠れた魅力</div>
+        <p class="rcard-text" id="res-charm"></p>
+      </div>
+
+      <div class="rcard rcard-step r-anim" style="animation-delay:.28s">
+        <div class="rcard-label">今すぐできるスモールステップ</div>
+        <p class="rcard-step-text" id="res-step"></p>
+      </div>
+    </div>
+
+    <div class="r-anim" style="animation-delay:.4s">
+      <a href="https://lin.ee/qUvyFAp" class="btn-line" target="_blank" rel="noopener noreferrer">
+        さらに深く自分と向き合う
+        <span class="btn-line-sub">公式LINEへ → 無料でご相談できます</span>
+      </a>
+    </div>
+
+    <div class="retry-wrap r-anim" style="animation-delay:.52s">
+      <button class="btn-retry" onclick="resetDiagnosis()">もう一度診断する</button>
+    </div>
+
+    <p class="footer-note r-anim" style="animation-delay:.6s">© Courage × perche</p>
+  </div>
+
+
+  <script>
+  // ============================================================
+  //  DATA
+  // ============================================================
+  const questions = [
+    { text: "「こうすべき」「これくらいはできなければ」と自分を奮い立たせて、無理をしていることがある", type: "A" },
+    { text: "これからの生き方や、自分の居場所について、漠然とした不安を感じることがある",             type: "B" },
+    { text: "自分が何をしたいのか、何が好きで何が嫌いなのか、よくわからなくなってきた気がする",       type: "C" },
+    { text: "やるべきことに追われていて、自分自身のことをゆっくり考える時間がまったくない",           type: "D" },
+    { text: "誰かに迷惑をかけたり、自分の役割を果たせなかったりすることが、とても怖い",               type: "A" },
+    { text: "子育ての区切りや仕事の転換期など「次の自分」を想像すると、不安や迷いを感じる",           type: "B" },
+    { text: "つらいときも「大丈夫」と言ってしまい、自分の感情をうまく外に出せないことがある",         type: "C" },
+    { text: "毎日が忙しすぎて、気がついたら一日が終わっている、という感覚がある",                     type: "D" },
+    { text: "「完璧にできなければ意味がない」「中途半端な自分はダメだ」と感じてしまうことがある",     type: "A" },
+    { text: "「これをやりたい」「これが好き」というワクワク感が、最近なかなか湧いてこない",           type: "C" }
+  ];
+
+  // 各タイプの質問数（正規化用）
+  const typeCount = { A: 3, B: 2, C: 3, D: 2 };
+
+  const choiceLabels = [
+    "全くあてはまらない",
+    "あまりあてはまらない",
+    "少しあてはまる",
+    "とてもあてはまる"
+  ];
+
+  const resultData = {
+    A: {
+      name: "完璧主義の「鎧」タイプ",
+      feature: "役割や責任をきちんとこなすことに全力を注いできたあなた。「こうすべき」という声に懸命に応えてきた分だけ、あなた自身の本音は、いつも最後尾に回り続けてきたのかもしれません。",
+      charm:   "あなたが積み重ねてきた誠実さは、周囲の人がしっかりと感じています。「この人に任せれば安心」と思われる深い信頼感と責任感——それがあなたの本物の魅力です。",
+      step:    "今日は、誰かのためではなく「自分へのNO」を一つだけ練習してみましょう。「やらなくてもいいこと」を一つ手放す。それだけで十分です。"
+    },
+    B: {
+      name: "未来への「霧」タイプ",
+      feature: "これからの自分の生き方について、ぼんやりとした不安や迷いを感じているあなた。変化の波の中にいるからこそ、先が見えにくくなっています。それは、あなたが真剣に「自分の生き方」を考えているサインです。",
+      charm:   "変化の兆しを敏感にキャッチできるのは、あなたの繊細な感性があるから。その細やかな感受性は、自分と向き合うプロセスで必ず大きな力になります。",
+      step:    "まずは1分間、目を閉じて深い呼吸を。吸う・止める・吐く、その3拍子で、ざわついた心を「今、ここ」に戻してあげましょう。"
+    },
+    C: {
+      name: "感情の「フタ」タイプ",
+      feature: "我慢することがいつの間にか当たり前になって、自分の「好き・嫌い」の感覚が少し麻痺してきているかもしれません。それほどまでに、誰かや何かのために感情を抑えてきたということ。",
+      charm:   "どんな人に対しても優しく接することができるあなたの包容力は、深い愛情から生まれています。誰に対しても注げるその温かさは、誰にでも持てるものではありません。",
+      step:    "「今日、何が食べたい？」——毎日この質問を自分に投げかけてみてください。答えは何でもOK。自分の「好き」を取り戻す、最初の一歩です。"
+    },
+    D: {
+      name: "エネルギーの「枯渇」タイプ",
+      feature: "日々のタスクをこなすことで手一杯で、自分を振り返る余白がほとんどない状態。それはこれまであなたが、多くのことを確実にやり遂げてきた証拠でもあります。",
+      charm:   "多くのことを同時にまわしてきた実行力と底力は、あなたならではの卓越した強さ。どんな場面でも動ける力が、あなたの中にしっかり根付いています。",
+      step:    "1日5分だけ、スマホを置いて「何もしない」時間を設けてみてください。ぼーっとするだけでOK。それがエネルギーを取り戻す最短ルートです。"
+    }
+  };
+
+  // ============================================================
+  //  STATE
+  // ============================================================
+  let currentQ = 0;
+  let answers  = new Array(questions.length).fill(null);
+
+  // ============================================================
+  //  HELPERS
+  // ============================================================
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => {
+      s.classList.remove('active');
+      s.style.animation = 'none';
+    });
+    const el = document.getElementById(id);
+    el.style.animation = 'none';
+    void el.offsetWidth;
+    el.style.animation = '';
+    el.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ============================================================
+  //  QUESTION RENDERING
+  // ============================================================
+  function renderQuestion() {
+    const total = questions.length;
+    const q     = questions[currentQ];
+
+    // Progress
+    const pct = Math.round((currentQ / total) * 100);
+    document.getElementById('p-fill').style.width  = Math.max(pct, 5) + '%';
+    document.getElementById('p-label').textContent = `質問 ${currentQ + 1} / ${total}`;
+    document.getElementById('p-pct').textContent   = pct + '%';
+
+    // Q label & text
+    document.getElementById('q-num').textContent  = 'Q ' + String(currentQ + 1).padStart(2, '0');
+    document.getElementById('q-text').textContent = q.text;
+
+    // Back button
+    document.getElementById('btn-back').style.visibility =
+      currentQ > 0 ? 'visible' : 'hidden';
+
+    // Choices
+    const wrap = document.getElementById('choices');
+    wrap.innerHTML = '';
+    choiceLabels.forEach((label, i) => {
+      const val = i + 1;
+      const isSelected = answers[currentQ] === val;
+
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn' + (isSelected ? ' selected' : '');
+      btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+      btn.innerHTML = `
+        <span class="choice-dot">
+          <span class="choice-dot-num">${val}</span>
+        </span>
+        <span class="choice-label">${label}</span>
+      `;
+      btn.onclick = () => selectAnswer(val);
+      wrap.appendChild(btn);
+    });
+  }
+
+  // ============================================================
+  //  FLOW CONTROL
+  // ============================================================
+  function startDiagnosis() {
+    currentQ = 0;
+    answers  = new Array(questions.length).fill(null);
+    showScreen('screen-question');
+    renderQuestion();
+  }
+
+  function selectAnswer(val) {
+    answers[currentQ] = val;
+    renderQuestion(); // reflect selection highlight
+
+    setTimeout(() => {
+      if (currentQ < questions.length - 1) {
+        currentQ++;
+        // Slide-in animation for new question
+        const qs = document.getElementById('screen-question');
+        qs.style.animation = 'none';
+        void qs.offsetWidth;
+        qs.style.animation = 'screenIn 0.38s cubic-bezier(0.22,1,0.36,1) both';
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }, 260);
+  }
+
+  function goBack() {
+    if (currentQ > 0) {
+      currentQ--;
+      const qs = document.getElementById('screen-question');
+      qs.style.animation = 'none';
+      void qs.offsetWidth;
+      qs.style.animation = 'screenIn 0.35s cubic-bezier(0.22,1,0.36,1) both';
+      renderQuestion();
+    }
+  }
+
+  // ============================================================
+  //  SCORING
+  // ============================================================
+  function calcResult() {
+    const totals = { A: 0, B: 0, C: 0, D: 0 };
+    questions.forEach((q, i) => {
+      if (answers[i] !== null) totals[q.type] += answers[i];
+    });
+
+    // Normalize by number of questions per type
+    let winner = 'A', best = -1;
+    for (const t in totals) {
+      const norm = totals[t] / typeCount[t];
+      if (norm > best) { best = norm; winner = t; }
+    }
+    return winner;
+  }
+
+  // ============================================================
+  //  RESULT DISPLAY
+  // ============================================================
+  function showResult() {
+    const type = calcResult();
+    const d    = resultData[type];
+
+    document.getElementById('res-type').textContent    = d.name;
+    document.getElementById('res-feature').textContent = d.feature;
+    document.getElementById('res-charm').textContent   = d.charm;
+    document.getElementById('res-step').textContent    = d.step;
+
+    showScreen('screen-result');
+
+    // Staggered reveal animations
+    const els = document.querySelectorAll('#screen-result .r-anim');
+    els.forEach(el => {
+      el.classList.remove('on');
+      void el.offsetWidth;
+    });
+    els.forEach((el, i) => {
+      const delayAttr = el.style.animationDelay
+        ? parseFloat(el.style.animationDelay) * 1000
+        : 0;
+      setTimeout(() => el.classList.add('on'), 80 + i * 100 + delayAttr);
+    });
+  }
+
+  function resetDiagnosis() {
+    document.querySelectorAll('#screen-result .r-anim').forEach(el => {
+      el.classList.remove('on');
+    });
+    currentQ = 0;
+    answers  = new Array(questions.length).fill(null);
+    showScreen('screen-top');
+  }
+  </script>
+</body>
+</html>
