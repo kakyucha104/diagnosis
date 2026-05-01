@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>本音チェックイン診断 | Re:self Courage</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2;
+    --warm-white: #fff9f4;
+    --sage: #8a9e8c;
+    --sage-light: #b8c9b9;
+    --sage-dark: #5c7a5e;
+    --terracotta: #c4836a;
+    --terracotta-light: #e8b5a2;
+    --gold: #c9a96e;
+    --text-dark: #3a3330;
+    --text-mid: #6b5e58;
+    --text-light: #9e918b;
+    --border: #e8ddd6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── background texture ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 20%, rgba(138,158,140,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 90% 80%, rgba(196,131,106,0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* ── header ── */
+  .site-header {
+    text-align: center;
+    padding: 32px 0 20px;
+  }
+
+  .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    color: var(--text-light);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .logo-line {
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+    margin: 8px auto;
+  }
+
+  /* ── screen base ── */
+  .screen {
+    display: none;
+    animation: fadeUp 0.5s ease both;
+  }
+  .screen.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── start screen ── */
+  .start-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 28px 36px;
+    text-align: center;
+    margin-top: 8px;
+    box-shadow: 0 4px 24px rgba(90,70,60,0.06);
+  }
+
+  .start-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .start-title {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.55;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+  }
+
+  .start-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    color: var(--text-light);
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+
+  .divider {
+    width: 48px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto;
+  }
+
+  .start-lead {
+    font-size: 14px;
+    line-height: 2;
+    color: var(--text-mid);
+    margin-bottom: 10px;
+  }
+
+  .start-note {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 32px;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--sage-dark), var(--sage));
+    color: #fff;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    padding: 16px 40px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(92,122,94,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(92,122,94,0.35);
+  }
+
+  /* ── progress bar ── */
+  .progress-wrap {
+    margin: 24px 0 8px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-light);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sage-dark), var(--terracotta-light));
+    border-radius: 10px;
+    transition: width 0.4s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── question card ── */
+  .q-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 24px 28px;
+    box-shadow: 0 4px 24px rgba(90,70,60,0.06);
+    margin-bottom: 16px;
+  }
+
+  .q-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--text-light);
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .q-text {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-dark);
+    margin-bottom: 24px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-btn {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-align: left;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .option-btn:hover {
+    border-color: var(--sage-light);
+    background: rgba(138,158,140,0.05);
+    color: var(--text-dark);
+  }
+
+  .option-btn.selected {
+    border-color: var(--sage-dark);
+    background: rgba(92,122,94,0.08);
+    color: var(--text-dark);
+  }
+
+  .opt-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--sage-dark);
+    flex-shrink: 0;
+    margin-top: 1px;
+    width: 16px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .option-btn.selected .opt-mark { opacity: 1; }
+
+  .opt-letter {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    color: var(--text-light);
+    transition: background 0.2s, color 0.2s;
+    margin-top: 1px;
+  }
+
+  .option-btn.selected .opt-letter {
+    background: var(--sage-dark);
+    color: #fff;
+  }
+
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+
+  .btn-back {
+    background: none;
+    border: none;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .btn-next {
+    background: linear-gradient(135deg, var(--sage-dark), var(--sage));
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgba(92,122,94,0.25);
+    transition: all 0.2s;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .btn-next.ready {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .btn-next.ready:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 16px rgba(92,122,94,0.3);
+  }
+
+  /* ── loading ── */
+  .loading-screen {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .loading-ring {
+    width: 56px;
+    height: 56px;
+    border: 2px solid var(--border);
+    border-top-color: var(--sage-dark);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 24px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 15px;
+    color: var(--text-mid);
+    line-height: 2;
+  }
+
+  /* ── result screen ── */
+  .result-header {
+    text-align: center;
+    padding: 28px 0 20px;
+  }
+
+  .result-tag {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--sage-dark);
+    border: 1px solid var(--sage-light);
+    border-radius: 50px;
+    padding: 4px 14px;
+    margin-bottom: 16px;
+  }
+
+  .result-type-name {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.5;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+  }
+
+  .result-type-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    color: var(--text-light);
+  }
+
+  .result-icon-wrap {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, rgba(138,158,140,0.15), rgba(196,131,106,0.1));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    font-size: 36px;
+    border: 1px solid var(--border);
+  }
+
+  .result-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    box-shadow: 0 4px 24px rgba(90,70,60,0.06);
+    margin-bottom: 14px;
+  }
+
+  .result-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sage-dark);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .result-card-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .result-description {
+    font-size: 14.5px;
+    line-height: 2;
+    color: var(--text-mid);
+  }
+
+  .result-traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .trait-chip {
+    background: rgba(138,158,140,0.1);
+    border: 1px solid var(--sage-light);
+    border-radius: 50px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: var(--sage-dark);
+  }
+
+  .result-step {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 24px rgba(90,70,60,0.06);
+    margin-bottom: 14px;
+  }
+
+  .step-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .step-item:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, var(--sage-dark), var(--sage));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    color: #fff;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-text {
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: var(--text-mid);
+  }
+
+  .step-text strong {
+    color: var(--text-dark);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .courage-card {
+    background: linear-gradient(135deg, rgba(92,122,94,0.08), rgba(196,131,106,0.06));
+    border: 1px solid var(--sage-light);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .courage-card p {
+    font-size: 13.5px;
+    line-height: 2;
+    color: var(--text-mid);
+    margin-bottom: 16px;
+  }
+
+  .courage-card .brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    color: var(--sage-dark);
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .share-box {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .share-label {
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+  }
+
+  .share-text {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--text-mid);
+    margin-bottom: 12px;
+    word-break: break-all;
+  }
+
+  .btn-copy {
+    width: 100%;
+    background: #06C755;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+  }
+
+  .btn-copy:hover { background: #05b34c; }
+
+  .btn-retry {
+    width: 100%;
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 13px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--text-light);
+    cursor: pointer;
+    margin-top: 10px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-retry:hover {
+    border-color: var(--sage-light);
+    color: var(--text-mid);
+  }
+
+  .copied-msg {
+    text-align: center;
+    font-size: 12px;
+    color: var(--sage-dark);
+    margin-top: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .copied-msg.show { opacity: 1; }
+
+  footer {
+    text-align: center;
+    padding: 32px 0 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--text-light);
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header class="site-header">
+    <div class="brand">Re:self Courage</div>
+    <div class="logo-line"></div>
+  </header>
+
+  <!-- ═══ START ═══ -->
+  <div class="screen active" id="screen-start">
+    <div class="start-card">
+      <span class="start-icon">🌿</span>
+      <div class="start-sub">Honesty Check-in</div>
+      <h1 class="start-title">本音チェックイン診断</h1>
+      <div class="divider"></div>
+      <p class="start-lead">
+        頑張ってきた私は、<br>
+        どうやって自分に戻れるんだろう？
+      </p>
+      <p class="start-lead">
+        10の問いに答えるだけで、<br>
+        あなただけの<strong>「自分への戻り方」</strong>が<br>
+        見えてきます。
+      </p>
+      <p class="start-note">所要時間：約3分 ／ 全10問</p>
+      <button class="btn-primary" onclick="startQuiz()">診断をはじめる</button>
+    </div>
+  </div>
+
+  <!-- ═══ QUIZ ═══ -->
+  <div class="screen" id="screen-quiz">
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="q-label">Question 1 / 10</span>
+        <span id="q-pct">10%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:10%"></div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-num" id="q-num">Question 01</span>
+      <p class="q-text" id="q-text"></p>
+      <div class="options" id="options-wrap"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-back" id="btn-back" onclick="prevQuestion()">← もどる</button>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">つぎへ →</button>
+    </div>
+  </div>
+
+  <!-- ═══ LOADING ═══ -->
+  <div class="screen" id="screen-loading">
+    <div class="loading-screen">
+      <div class="loading-ring"></div>
+      <p class="loading-text">
+        あなたの答えを<br>読み解いています…
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══ RESULT ═══ -->
+  <div class="screen" id="screen-result">
+    <div class="result-header">
+      <div class="result-tag">Your Type</div>
+      <div class="result-icon-wrap" id="result-icon"></div>
+      <h2 class="result-type-name" id="result-name"></h2>
+      <div class="result-type-en" id="result-en"></div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">あなたについて</div>
+      <p class="result-description" id="result-desc"></p>
+      <div class="result-traits" id="result-traits"></div>
+    </div>
+
+    <div class="result-step">
+      <div class="result-card-title">自分に戻る3ステップ</div>
+      <div id="result-steps"></div>
+    </div>
+
+    <div class="courage-card">
+      <p id="result-courage-msg"></p>
+      <span class="brand-name">Re:self Courage</span>
+      <small style="font-size:11px;color:var(--text-light);">日下野英二・橘美湖</small>
+    </div>
+
+    <div class="share-box">
+      <span class="share-label">🌿 LINEに送って診断を受け取る</span>
+      <div class="share-text" id="share-text"></div>
+      <button class="btn-copy" onclick="copyAndOpenLine()">
+        <span>📋 コピーしてLINEを開く</span>
+      </button>
+      <div class="copied-msg" id="copied-msg">コピーしました！LINEに貼り付けて送ってください ✨</div>
+    </div>
+
+    <button class="btn-retry" onclick="retryQuiz()">もう一度診断する</button>
+  </div>
+
+</div>
+
+<footer>Re:self Courage &nbsp;|&nbsp; 日下野英二・橘美湖</footer>
+
+<script>
+const questions = [
+  {
+    text: "気持ちがざわついたとき、\n最初にやりたくなることは？",
+    options: [
+      { label: "深呼吸する・横になる・散歩に出る", type: "A" },
+      { label: "誰かに話したい・声に出して整理したい", type: "B" },
+      { label: "紙に書き出したい・気持ちを言語化したい", type: "C" },
+      { label: "一人になりたい・静かにしていたい", type: "D" },
+    ]
+  },
+  {
+    text: "「自分に戻れた」と感じる瞬間は\nどんなとき？",
+    options: [
+      { label: "からだがほぐれたとき・温かさを感じたとき", type: "A" },
+      { label: "「わかってもらえた」と感じたとき", type: "B" },
+      { label: "気持ちが言葉になったとき", type: "C" },
+      { label: "静かな空間にいるとき", type: "D" },
+    ]
+  },
+  {
+    text: "心が疲れているとき、\n自然とやっていることは？",
+    options: [
+      { label: "お風呂にゆっくり入る・ストレッチする", type: "A" },
+      { label: "誰かに電話する・話を聞いてもらう", type: "B" },
+      { label: "日記を書く・気持ちをメモする", type: "C" },
+      { label: "音楽を聴く・何もしない時間を作る", type: "D" },
+    ]
+  },
+  {
+    text: "悩みの糸口が見えるのは\nどんな状況？",
+    options: [
+      { label: "歩いているとき・身体を動かしているとき", type: "A" },
+      { label: "誰かと話しているとき", type: "B" },
+      { label: "書いていて「あ、これだ」と気づくとき", type: "C" },
+      { label: "ふとした静かな瞬間", type: "D" },
+    ]
+  },
+  {
+    text: "自分らしくいられると\n感じる場所は？",
+    options: [
+      { label: "自然の中・空気が気持ちいい場所", type: "A" },
+      { label: "気の置けない人といる場所", type: "B" },
+      { label: "カフェや自分の部屋（落ち着いて書ける場所）", type: "C" },
+      { label: "一人でいられる静かな場所", type: "D" },
+    ]
+  },
+  {
+    text: "嬉しいことがあったとき、\nどう味わう？",
+    options: [
+      { label: "からだで表現したくなる（跳ぶ・踊る）", type: "A" },
+      { label: "誰かに話して共有したくなる", type: "B" },
+      { label: "記録する・書き残したくなる", type: "C" },
+      { label: "一人でじっくり感じたい", type: "D" },
+    ]
+  },
+  {
+    text: "自分の本音が見えてくるのは\nどんなとき？",
+    options: [
+      { label: "からだが反応したとき（ドキドキ・ほっとする感覚）", type: "A" },
+      { label: "話しながら「こう思ってたんだ」と気づくとき", type: "B" },
+      { label: "書いているうちに出てきたとき", type: "C" },
+      { label: "静かに座っていたとき", type: "D" },
+    ]
+  },
+  {
+    text: "リフレッシュに\n一番効くのは？",
+    options: [
+      { label: "からだを動かすこと", type: "A" },
+      { label: "誰かと会って話すこと", type: "B" },
+      { label: "好きなことを書いたり調べたりすること", type: "C" },
+      { label: "何もしない時間・ぼーっとすること", type: "D" },
+    ]
+  },
+  {
+    text: "「自分を大切にする」と聞いて\n思い浮かぶのは？",
+    options: [
+      { label: "からだのケア（睡眠・食事・マッサージ）", type: "A" },
+      { label: "本音を話せる人と過ごす", type: "B" },
+      { label: "自分の気持ちを言語化する・書く", type: "C" },
+      { label: "静かな時間・ひとり時間を守る", type: "D" },
+    ]
+  },
+  {
+    text: "自分と向き合うとき、\n合いそうな方法は？",
+    options: [
+      { label: "歩きながら考える・呼吸法", type: "A" },
+      { label: "信頼できる人との対話", type: "B" },
+      { label: "ジャーナリング・書く瞑想", type: "C" },
+      { label: "静かに座っている瞑想", type: "D" },
+    ]
+  }
+];
+
+const types = {
+  A: {
+    name: "からだで戻るタイプ",
+    en: "Body Sensation Type",
+    icon: "🌬️",
+    desc: "あなたは身体の感覚を通して、自分の本音にアクセスできるタイプ。呼吸・歩く・温かさ・ほぐれる感覚が、自分への「帰り道」になっています。頭で考えるより先に、からだが先に答えを知っていることが多いはず。",
+    traits: ["呼吸で整う", "身体感覚が敏感", "動くと考えが進む", "温もりに癒される"],
+    steps: [
+      { title: "4秒吸って・8秒吐く", body: "朝の5分間、深呼吸だけを丁寧にやってみる。からだが「今ここ」に戻ってきます。" },
+      { title: "10分だけ歩く", body: "何も考えなくていい。ただ歩くこと。からだの感覚に意識を向けると、自然と答えが見えてきます。" },
+      { title: "お風呂で「今日の私、よくやった」", body: "湯船に浸かりながら、今日のからだをねぎらう一言を。感情の解放が自然に起きます。" }
+    ],
+    courage: "Courageでは、呼吸を入口にした内省のレッスンで、からだから本音にアクセスする時間を大切にしています。"
+  },
+  B: {
+    name: "声で戻るタイプ",
+    en: "Voice & Dialogue Type",
+    icon: "💬",
+    desc: "あなたは誰かと話すこと・声に出すことで、自分の気持ちが整理されるタイプ。「話してみたら気持ちが見えてきた」という体験が多いのではないでしょうか。人との対話が、自分自身との対話にもなっています。",
+    traits: ["話すと気持ちが整う", "共感で安心できる", "声に力がある", "一人より二人で深まる"],
+    steps: [
+      { title: "声に出して今日の気持ちを一言", body: "「今日はちょっと疲れた」でいい。声に出すだけで、感情が外に出てきます。" },
+      { title: "信頼できる人に「聞いてほしいんだけど」と言う", body: "解決策を求めなくていい。ただ話す場をつくることが、自分への戻り方です。" },
+      { title: "自分に語りかける音声を聴く", body: "Courageの音声ガイドを朝に聴くだけでも、対話的な内省が始まります。" }
+    ],
+    courage: "Courageでは、対話を通して自分の本音に気づいていくレッスンを提供しています。あなたにとって最も効果的な内省の場です。"
+  },
+  C: {
+    name: "言葉で戻るタイプ",
+    en: "Writing & Words Type",
+    icon: "✍️",
+    desc: "あなたは書くこと・言語化することで、内側にアクセスできるタイプ。言葉にする過程で「あ、こう思っていたんだ」という発見が生まれます。日記・メモ・ジャーナリングが、あなたの最高の内省ツールです。",
+    traits: ["書くと気持ちが見える", "言語化が得意", "記録することで安心", "文字に本音が宿る"],
+    steps: [
+      { title: "朝3行だけ書く", body: "「今日の気分・体の状態・一つだけ楽しみなこと」。それだけで内省が始まります。" },
+      { title: "「本当はどう思ってる？」と自分に問う", body: "紙に書いて問いかけてみる。書くうちに、本音が滲み出てきます。" },
+      { title: "書いたことを読み返す", body: "一週間後に読み返すと「こんなこと思ってたんだ」という気づきが生まれます。" }
+    ],
+    courage: "Courageでは、書く瞑想やジャーナリングをレッスンに取り入れています。言葉で自分と対話するあなたの力を、さらに深めていけます。"
+  },
+  D: {
+    name: "静けさで戻るタイプ",
+    en: "Stillness & Solitude Type",
+    icon: "🌙",
+    desc: "あなたは静かな時間・一人でいる空間の中で、自然に自分に戻っていけるタイプ。何もしない時間が、実は最も深い内省になっています。静寂があなたにとっての「自分への帰り道」です。",
+    traits: ["一人の時間が充電になる", "静寂に安らぎを感じる", "深く考える力がある", "ノイズが少ない方が本音に近づく"],
+    steps: [
+      { title: "毎日5分、ただ座る", body: "スマホも置いて、ただ座っているだけ。それだけで自分への扉が開きます。" },
+      { title: "「一人でいる時間」を予定に入れる", body: "休むことではなく、自分に戻る大切な時間として、意識してスケジュールに組み込みましょう。" },
+      { title: "静かな朝に自分へ問いかける", body: "「今日の私はどんな気分？」一言でいい。静寂の中で本音が浮かんできます。" }
+    ],
+    courage: "Courageでは、静けさを大切にした瞑想と内省のレッスンを提供しています。あなたの「静かに戻る力」を育てていける場所です。"
+  }
+};
+
+let current = 0;
+let answers = new Array(10).fill(null);
+let selectedType = null;
+
+function startQuiz() {
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  const total = questions.length;
+
+  document.getElementById('q-label').textContent = `Question ${current + 1} / ${total}`;
+  document.getElementById('q-pct').textContent = `${Math.round((current + 1) / total * 100)}%`;
+  document.getElementById('progress-fill').style.width = `${(current + 1) / total * 100}%`;
+  document.getElementById('q-num').textContent = `Question ${String(current + 1).padStart(2, '0')}`;
+  document.getElementById('q-text').textContent = q.text;
+
+  const wrap = document.getElementById('options-wrap');
+  wrap.innerHTML = '';
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (answers[current] === opt.type ? ' selected' : '');
+    btn.dataset.type = opt.type;
+    btn.innerHTML = `
+      <span class="opt-letter">${['A','B','C','D'][i]}</span>
+      <span>${opt.label}</span>
+      <span class="opt-mark">✓</span>
+    `;
+    btn.addEventListener('click', () => selectOption(opt.type));
+    wrap.appendChild(btn);
+  });
+
+  document.getElementById('btn-back').style.visibility = current === 0 ? 'hidden' : 'visible';
+  updateNextBtn();
+}
+
+function selectOption(type) {
+  answers[current] = type;
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.type === type);
+  });
+  updateNextBtn();
+
+  // Auto-advance after short delay
+  setTimeout(() => {
+    if (current < questions.length - 1) {
+      nextQuestion();
+    } else {
+      showResult();
+    }
+  }, 380);
+}
+
+function updateNextBtn() {
+  const btn = document.getElementById('btn-next');
+  if (answers[current]) {
+    btn.classList.add('ready');
+    btn.textContent = current === questions.length - 1 ? '結果を見る ✨' : 'つぎへ →';
+  } else {
+    btn.classList.remove('ready');
+    btn.textContent = 'つぎへ →';
+  }
+}
+
+function nextQuestion() {
+  if (!answers[current]) return;
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function prevQuestion() {
+  if (current > 0) {
+    current--;
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  showScreen('screen-loading');
+
+  setTimeout(() => {
+    // Tally
+    const counts = { A: 0, B: 0, C: 0, D: 0 };
+    answers.forEach(a => { if (a) counts[a]++; });
+    selectedType = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+
+    const t = types[selectedType];
+
+    document.getElementById('result-icon').textContent = t.icon;
+    document.getElementById('result-name').textContent = t.name;
+    document.getElementById('result-en').textContent = t.en;
+    document.getElementById('result-desc').textContent = t.desc;
+
+    const traitsWrap = document.getElementById('result-traits');
+    traitsWrap.innerHTML = t.traits.map(tr => `<span class="trait-chip">${tr}</span>`).join('');
+
+    const stepsWrap = document.getElementById('result-steps');
+    stepsWrap.innerHTML = t.steps.map((s, i) => `
+      <div class="step-item">
+        <div class="step-num">${i + 1}</div>
+        <div class="step-text">
+          <strong>${s.title}</strong>
+          ${s.body}
+        </div>
+      </div>
+    `).join('');
+
+    document.getElementById('result-courage-msg').textContent = t.courage;
+
+    const shareMsg = `【本音チェックイン診断の結果】\n\n私のタイプは「${t.name}」でした！\n\nタイプ名を送ると、詳しい分析が届きます。\n→ ${t.name}`;
+    document.getElementById('share-text').textContent = shareMsg;
+
+    showScreen('screen-result');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 1800);
+}
+
+function copyAndOpenLine() {
+  const t = types[selectedType];
+  const msg = t.name;
+  navigator.clipboard.writeText(msg).then(() => {
+    const el = document.getElementById('copied-msg');
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 3000);
+    setTimeout(() => {
+      window.open('https://line.me/ti/p/@courage', '_blank');
+    }, 600);
+  }).catch(() => {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = msg;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const el = document.getElementById('copied-msg');
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 3000);
+  });
+}
+
+function retryQuiz() {
+  current = 0;
+  answers = new Array(10).fill(null);
+  selectedType = null;
+  showScreen('screen-quiz');
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
