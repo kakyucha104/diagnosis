@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自分インタビューシート | Re:self Courage</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #2c2420;
+    --ink-mid: #5c4e48;
+    --ink-soft: #9a8a84;
+    --paper: #faf6f0;
+    --paper-warm: #fff8f2;
+    --gold: #c9a96e;
+    --gold-pale: #f0e4cc;
+    --rose: #c4836a;
+    --rose-pale: #f5ddd5;
+    --moss: #7a9e7e;
+    --moss-pale: #ddeade;
+    --border: #e8ddd4;
+    --shadow: rgba(60,40,30,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* grain texture */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.4;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 15% 10%, rgba(201,169,110,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 70% at 85% 90%, rgba(122,158,126,0.06) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  /* ── header ── */
+  .site-header {
+    text-align: center;
+    padding: 36px 0 24px;
+  }
+
+  .header-ornament {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .header-rule {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin: 10px 0;
+  }
+
+  .header-rule span {
+    display: block;
+    height: 1px;
+    width: 40px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+
+  .header-rule span:last-child {
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .header-rule em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold);
+  }
+
+  /* ── screens ── */
+  .screen { display: none; }
+  .screen.active {
+    display: block;
+    animation: riseIn 0.55s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── card base ── */
+  .card {
+    background: var(--paper-warm);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 36px 28px;
+    box-shadow: 0 6px 32px var(--shadow);
+  }
+
+  /* ── START ── */
+  .start-icon {
+    text-align: center;
+    font-size: 42px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .start-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 1.6;
+    text-align: center;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .start-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .gold-rule {
+    width: 48px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 24px;
+  }
+
+  .start-lead {
+    font-size: 14.5px;
+    line-height: 2.1;
+    color: var(--ink-mid);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .start-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  /* ── progress ── */
+  .progress-area {
+    margin: 20px 0 6px;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .progress-track {
+    height: 2px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--rose));
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── question ── */
+  .q-card { margin-bottom: 14px; }
+
+  .q-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .q-badge {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  .q-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .q-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.8;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .q-hint {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+
+  .answer-textarea {
+    width: 100%;
+    min-height: 120px;
+    background: var(--paper);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink);
+    resize: none;
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+
+  .answer-textarea::placeholder { color: var(--ink-soft); }
+
+  .answer-textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,169,110,0.12);
+  }
+
+  .char-hint {
+    text-align: right;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+
+  /* ── nav ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+
+  .btn-ghost {
+    background: none;
+    border: none;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s;
+  }
+
+  .btn-ghost:hover { color: var(--ink-mid); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #8a6e4e, var(--gold));
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 13px 28px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(201,169,110,0.3);
+    transition: all 0.2s;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .btn-primary.ready {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .btn-primary.ready:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201,169,110,0.35);
+  }
+
+  /* ── skip ── */
+  .btn-skip {
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 4px;
+  }
+
+  /* ── loading ── */
+  .loading-wrap {
+    text-align: center;
+    padding: 60px 24px;
+  }
+
+  .candle {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 24px;
+    animation: flicker 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes flicker {
+    0%   { transform: scale(1) rotate(-1deg); opacity: 0.9; }
+    50%  { transform: scale(1.05) rotate(0.5deg); opacity: 1; }
+    100% { transform: scale(0.97) rotate(1deg); opacity: 0.85; }
+  }
+
+  .loading-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    color: var(--ink-mid);
+    line-height: 2;
+    margin-bottom: 12px;
+  }
+
+  .loading-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+  }
+
+  .dots span {
+    display: inline-block;
+    animation: dot-pulse 1.4s infinite both;
+    font-size: 20px;
+    color: var(--gold);
+  }
+
+  .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes dot-pulse {
+    0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+
+  /* ── result ── */
+  .result-eyebrow {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .result-tag {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-pale);
+    border-radius: 50px;
+    padding: 4px 16px;
+    background: rgba(201,169,110,0.06);
+  }
+
+  .message-card {
+    background: linear-gradient(160deg, var(--paper-warm), #fff9f5);
+    border: 1px solid var(--gold-pale);
+    border-radius: 24px;
+    padding: 36px 28px;
+    box-shadow: 0 8px 40px rgba(201,169,110,0.1);
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .message-card::before {
+    content: '\201C';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 120px;
+    color: var(--gold-pale);
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .message-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 15.5px;
+    line-height: 2.2;
+    color: var(--ink-mid);
+    position: relative;
+    z-index: 1;
+    white-space: pre-wrap;
+  }
+
+  .message-footer {
+    text-align: right;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--gold-pale);
+  }
+
+  .message-from {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+  }
+
+  /* answers review */
+  .review-card {
+    margin-bottom: 14px;
+  }
+
+  .review-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    width: 100%;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--paper-warm);
+    transition: border-color 0.2s;
+  }
+
+  .review-toggle:hover { border-color: var(--gold-pale); }
+
+  .review-body {
+    display: none;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    background: var(--paper-warm);
+  }
+
+  .review-body.open { display: block; }
+
+  .review-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .review-item:last-child { border-bottom: none; }
+
+  .review-q {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+
+  .review-a {
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: var(--ink-mid);
+  }
+
+  .review-empty {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* LINE share */
+  .line-card {
+    background: var(--paper-warm);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 14px;
+  }
+
+  .line-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .line-card-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .line-preview {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.8;
+    margin-bottom: 14px;
+  }
+
+  .btn-line {
+    width: 100%;
+    background: #06C755;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .btn-line:hover {
+    background: #05b34c;
+    transform: translateY(-1px);
+  }
+
+  .copied-msg {
+    text-align: center;
+    font-size: 12px;
+    color: var(--moss);
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    min-height: 18px;
+  }
+
+  .copied-msg.show { opacity: 1; }
+
+  .btn-retry {
+    width: 100%;
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 13px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+  }
+
+  .btn-retry:hover {
+    border-color: var(--gold-pale);
+    color: var(--ink-mid);
+  }
+
+  /* courage banner */
+  .courage-banner {
+    background: linear-gradient(135deg, rgba(122,158,126,0.08), rgba(201,169,110,0.08));
+    border: 1px solid rgba(122,158,126,0.25);
+    border-radius: 20px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .courage-banner p {
+    font-size: 13.5px;
+    line-height: 2;
+    color: var(--ink-mid);
+    margin-bottom: 10px;
+  }
+
+  .courage-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    color: var(--moss);
+    display: block;
+  }
+
+  footer {
+    text-align: center;
+    padding: 32px 0 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+  }
+
+  /* error */
+  .error-box {
+    background: rgba(196,131,106,0.08);
+    border: 1px solid var(--rose-pale);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 13px;
+    color: var(--rose);
+    line-height: 1.8;
+    margin-top: 14px;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header class="site-header">
+    <span class="header-ornament">Re:self Courage</span>
+    <div class="header-rule">
+      <span></span>
+      <em>自分インタビュー</em>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- ═══ START ═══ -->
+  <div class="screen active" id="screen-start">
+    <div class="card">
+      <span class="start-icon">🪞</span>
+      <h1 class="start-title">自分インタビューシート</h1>
+      <div class="start-en">Self Interview</div>
+      <div class="gold-rule"></div>
+      <p class="start-lead">
+        10の問いに、正直に答えてみてください。
+      </p>
+      <p class="start-lead">
+        答えが終わると、あなたの言葉をもとに<br>
+        <strong>あなただけへのメッセージ</strong>が届きます。
+      </p>
+      <p class="start-lead" style="margin-bottom:20px;">
+        正しい答えも、うまい答えも要りません。<br>
+        今の自分の言葉で、大丈夫です。
+      </p>
+      <p class="start-note">所要時間：約10〜15分 ／ 全10問<br>答えたくない問いはスキップできます</p>
+      <div style="text-align:center;">
+        <button class="btn-primary ready" onclick="startInterview()" style="margin:0 auto;">はじめる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ QUESTION ═══ -->
+  <div class="screen" id="screen-question">
+    <div class="progress-area">
+      <div class="progress-meta">
+        <span id="q-label">1 / 10</span>
+        <span id="q-pct">10%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-bar" id="progress-bar" style="width:10%"></div>
+      </div>
+    </div>
+
+    <div class="card q-card">
+      <div class="q-eyebrow">
+        <span class="q-badge" id="q-badge">Question 01</span>
+        <div class="q-line"></div>
+      </div>
+      <p class="q-text" id="q-text"></p>
+      <p class="q-hint" id="q-hint"></p>
+      <textarea
+        class="answer-textarea"
+        id="answer-input"
+        placeholder="ここに書いてみてください…"
+        oninput="onInput()"
+      ></textarea>
+      <div class="char-hint">思いつくまま、どんな言葉でもOK</div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-ghost" id="btn-back" onclick="prevQ()">← もどる</button>
+      <button class="btn-primary" id="btn-next" onclick="nextQ()">つぎへ →</button>
+    </div>
+    <button class="btn-skip" onclick="skipQ()">この問いはスキップする</button>
+  </div>
+
+  <!-- ═══ LOADING ═══ -->
+  <div class="screen" id="screen-loading">
+    <div class="card loading-wrap">
+      <span class="candle">🕯️</span>
+      <p class="loading-title">
+        あなたの言葉を<br>
+        丁寧に読んでいます
+      </p>
+      <div class="dots">
+        <span>·</span><span>·</span><span>·</span>
+      </div>
+      <p class="loading-sub" style="margin-top:20px;">少しだけお待ちください</p>
+    </div>
+  </div>
+
+  <!-- ═══ RESULT ═══ -->
+  <div class="screen" id="screen-result">
+    <div class="result-eyebrow">
+      <span class="result-tag">Your Message</span>
+    </div>
+
+    <div class="message-card">
+      <p class="message-text" id="result-message">…</p>
+      <div class="message-footer">
+        <span class="message-from">Re:self Courage より、あなたへ</span>
+      </div>
+    </div>
+
+    <div class="courage-banner">
+      <p id="result-courage"></p>
+      <span class="courage-brand">Re:self Courage</span>
+      <small style="font-size:11px;color:var(--ink-soft);display:block;margin-top:2px;">日下野英二・橘美湖</small>
+    </div>
+
+    <div class="review-card">
+      <button class="review-toggle" onclick="toggleReview(this)">
+        <span>📝 あなたの答えを見る</span>
+        <span>▼</span>
+      </button>
+      <div class="review-body" id="review-body"></div>
+    </div>
+
+    <div class="line-card">
+      <div class="line-card-title">Courageの公式LINEへ</div>
+      <p style="font-size:13px;color:var(--ink-mid);line-height:1.9;margin-bottom:12px;">
+        このメッセージをLINEに送ると、<br>
+        さらに深い対話をお届けします。
+      </p>
+      <div class="line-preview" id="line-preview">「自分インタビューシート」完了</div>
+      <button class="btn-line" onclick="copyAndLine()">
+        <span>📋 コピーしてLINEを開く</span>
+      </button>
+      <div class="copied-msg" id="copied-msg">コピーしました！LINEに貼り付けて送ってください ✨</div>
+    </div>
+
+    <button class="btn-retry" onclick="retry()">もう一度やってみる</button>
+  </div>
+
+</div>
+<footer>Re:self Courage &nbsp;·&nbsp; 日下野英二・橘美湖</footer>
+
+<script>
+const questions = [
+  {
+    text: "今、何が一番しんどいですか？",
+    hint: "小さなことでも、ずっと続いていることでも。正直に。"
+  },
+  {
+    text: "5年後の自分に会えたら、\n何を聞いてみたいですか？",
+    hint: "「あのとき、どうすれば良かった？」でも「今、幸せ？」でも。"
+  },
+  {
+    text: "昔、誰かに言われて\n嬉しかった言葉はありますか？",
+    hint: "褒め言葉でなくてもOK。ふと思い出す言葉があれば。"
+  },
+  {
+    text: "気づいたら自然とやっていること、\nありますか？",
+    hint: "趣味や特技でなくていい。「なんとなくいつもやってしまう」こと。"
+  },
+  {
+    text: "友人や家族に\nよく頼まれることは何ですか？",
+    hint: "「また頼まれた」「相談されることが多い」と感じることがあれば。"
+  },
+  {
+    text: "「これだけは譲れない」と感じることは\n何かありますか？",
+    hint: "大きなことでも、小さなことでも。自分の中の譲れないもの。"
+  },
+  {
+    text: "疲れたとき、どんな自分が出てきますか？",
+    hint: "イライラする、黙り込む、食べてしまう…どんな姿でも正直に。"
+  },
+  {
+    text: "本当は、どんな一日を過ごしたいですか？",
+    hint: "理想でなくていい。「こんな一日だったら、少し楽なのに」という感覚で。"
+  },
+  {
+    text: "実は嬉しいけど、\nなかなか言えていないことはありますか？",
+    hint: "照れくさくて言えないこと、言う機会がなかったこと。"
+  },
+  {
+    text: "今の自分に、\n一言かけるとしたら何と言いますか？",
+    hint: "厳しくなくていい。頑張れでなくていい。今の自分への言葉。"
+  }
+];
+
+let currentQ = 0;
+let answers = new Array(10).fill('');
+
+function startInterview() {
+  showScreen('screen-question');
+  renderQ();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderQ() {
+  const q = questions[currentQ];
+  const n = currentQ + 1;
+  const total = questions.length;
+
+  document.getElementById('q-label').textContent = `${n} / ${total}`;
+  document.getElementById('q-pct').textContent = `${Math.round(n / total * 100)}%`;
+  document.getElementById('progress-bar').style.width = `${n / total * 100}%`;
+  document.getElementById('q-badge').textContent = `Question ${String(n).padStart(2,'0')}`;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('q-hint').textContent = q.hint;
+  document.getElementById('answer-input').value = answers[currentQ];
+
+  document.getElementById('btn-back').style.visibility = currentQ === 0 ? 'hidden' : 'visible';
+
+  updateNextBtn();
+}
+
+function onInput() {
+  answers[currentQ] = document.getElementById('answer-input').value;
+  updateNextBtn();
+}
+
+function updateNextBtn() {
+  const btn = document.getElementById('btn-next');
+  const hasVal = answers[currentQ].trim().length > 0;
+  btn.classList.toggle('ready', hasVal);
+  btn.textContent = currentQ === questions.length - 1 ? 'メッセージを受け取る ✨' : 'つぎへ →';
+}
+
+function nextQ() {
+  if (!answers[currentQ].trim()) return;
+  if (currentQ < questions.length - 1) {
+    currentQ++;
+    renderQ();
+  } else {
+    generateMessage();
+  }
+}
+
+function prevQ() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQ();
+  }
+}
+
+function skipQ() {
+  answers[currentQ] = '';
+  if (currentQ < questions.length - 1) {
+    currentQ++;
+    renderQ();
+  } else {
+    generateMessage();
+  }
+}
+
+async function generateMessage() {
+  showScreen('screen-loading');
+
+  // Build the summary of answers
+  const qa = questions.map((q, i) => {
+    const a = answers[i].trim();
+    return a ? `Q${i+1}. ${q.text.replace(/\n/g,' ')}\n→ ${a}` : null;
+  }).filter(Boolean).join('\n\n');
+
+  const answeredCount = answers.filter(a => a.trim()).length;
+
+  const prompt = `あなたは「Re:self Courage」のカウンセラーです。
+以下は、仕事や家事に追われながらも、自分の本音や生き方を探している40代・50代の女性が「自分インタビューシート」に答えた内容です。
+
+【回答内容】
+${qa}
+
+この方への、心に寄り添うパーソナルメッセージを日本語で書いてください。
+
+【ルール】
+・300〜400文字程度
+・その人の言葉や感覚を受け止め、反映させた内容にする
+・「あなたはすでに〜」「その〜という感覚は」など、回答内容に具体的に触れること
+・説教・アドバイスは不要。ただ、その人の本質に光を当てる言葉を
+・Courageへの誘導は最後の一文に自然に入れる程度にとどめる
+・温かく、詩的に。しかし甘くなりすぎず
+・「。」で終わる文体
+・前置きや挨拶は不要。メッセージ本文のみ出力する`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await res.json();
+    const message = data.content?.[0]?.text || 'メッセージの生成に失敗しました。もう一度お試しください。';
+
+    // Courage follow-up message
+    const courageMsg = answeredCount >= 7
+      ? 'ここまで正直に向き合ってくれたあなたへ。Courageでは、この「自分への問い」をもっと深く、丁寧に一緒に探っていける場所を用意しています。'
+      : 'Courageでは、こうした問いを一人で抱えず、仲間と一緒に深めていける場所をつくっています。';
+
+    showResult(message, courageMsg);
+
+  } catch (e) {
+    showResult(
+      '申し訳ありません、メッセージの生成中にエラーが発生しました。\n\nもう一度お試しいただくか、時間をおいてアクセスしてください。',
+      'Courageでは、あなたのペースで自分と向き合える場所をつくっています。'
+    );
+  }
+}
+
+function showResult(message, courageMsg) {
+  document.getElementById('result-message').textContent = message;
+  document.getElementById('result-courage').textContent = courageMsg;
+
+  // Build review
+  const reviewBody = document.getElementById('review-body');
+  reviewBody.innerHTML = questions.map((q, i) => {
+    const a = answers[i].trim();
+    return `
+      <div class="review-item">
+        <div class="review-q">Q${i+1}. ${q.text.replace(/\n/g,' ')}</div>
+        ${a
+          ? `<div class="review-a">${a}</div>`
+          : `<div class="review-empty">（スキップ）</div>`
+        }
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('line-preview').textContent = '「自分インタビューシート」完了しました';
+
+  showScreen('screen-result');
+}
+
+function toggleReview(btn) {
+  const body = document.getElementById('review-body');
+  body.classList.toggle('open');
+  btn.querySelector('span:last-child').textContent = body.classList.contains('open') ? '▲' : '▼';
+}
+
+function copyAndLine() {
+  const text = '「自分インタビューシート」完了しました';
+  navigator.clipboard.writeText(text).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }).finally(() => {
+    const msg = document.getElementById('copied-msg');
+    msg.classList.add('show');
+    setTimeout(() => msg.classList.remove('show'), 3000);
+    setTimeout(() => window.open('https://line.me/ti/p/@courage', '_blank'), 500);
+  });
+}
+
+function retry() {
+  currentQ = 0;
+  answers = new Array(10).fill('');
+  showScreen('screen-start');
+}
+</script>
+</body>
+</html>
