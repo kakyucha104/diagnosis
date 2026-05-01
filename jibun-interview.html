@@ -454,65 +454,60 @@ function generateMessage() {
   setTimeout(() => { showResult(buildMessage()); }, 2200);
 }
 
-function extractKeyword(text) {
-  if (!text) return '';
-  const cleaned = text.replace(/[\n\r]/g, '。').split(/[。、！？!?]/)[0].trim();
-  return cleaned.length > 15 ? cleaned.slice(0, 15) + '…' : cleaned;
-}
-
 function buildMessage() {
   const a = answers.map(v => v.trim());
   const answered = a.filter(v => v).length;
   let parts = [];
 
-  // 冒頭：しんどさへの受け止め
-  if (a[0]) {
-    const opts = [
-      `「${extractKeyword(a[0])}」——その重さを、あなたはずっと一人で抱えてきたのかもしれません。`,
-      `毎日の中で「${extractKeyword(a[0])}」を感じながらも、前を向いてきたあなたへ。`,
-      `「${extractKeyword(a[0])}」という言葉の奥に、どれだけの日々があったのでしょう。`,
-    ];
-    parts.push(opts[answered % 3]);
+  // 冒頭：しんどさへの受け止め（回答を直接引用せず、感情トーンで受け取る）
+  const openings = [
+    'ここまで自分と向き合ってくれて、ありがとうございます。\nこの問いに答えることは、ときに勇気がいることです。',
+    '毎日を一生懸命に生きながら、それでも「何かが違う」と感じているあなたへ。',
+    '正直に答えてくれた言葉の一つひとつが、あなたの今を教えてくれました。',
+  ];
+  parts.push(openings[answered % 3]);
+
+  // 中盤：強みに光を当てる（自然な文体で、回答の"意味"を読み取る）
+  if (a[3] || a[4]) {
+    const doingThings = a[3] ? `自然と続けていることがある` : '';
+    const askedThings = a[4] ? `誰かに頼りにされている` : '';
+    const both = [doingThings, askedThings].filter(Boolean).join('、');
+    parts.push(`あなたには、${both}——そのことに、もう少しだけ目を向けてみてください。\nそれはあなたが意識しないうちに育ててきた、本物の力です。`);
+  } else if (a[2]) {
+    parts.push('かつて誰かにかけてもらった言葉を、今でも覚えているということ。\nその言葉があなたの心に残り続けているのには、理由があります。');
   } else {
-    parts.push('言葉にしにくいことを、それでもここまで向き合ってくれてありがとうございます。');
+    parts.push('あなたの中には、これまでの経験が育ててきた感覚があります。\nそれはまだ言葉になっていないかもしれないけれど、確かにそこにあります。');
   }
-
-  // 中盤：強みと本質
-  const strengths = [];
-  if (a[3]) strengths.push(`「${extractKeyword(a[3])}」を自然とやり続けているあなたの中に、すでに答えが宿っています。`);
-  if (a[4]) strengths.push(`「${extractKeyword(a[4])}」と頼まれるということは、あなたの中にそれだけの力があるということ。`);
-  if (a[2]) strengths.push(`かつて「${extractKeyword(a[2])}」と言われたあの瞬間——それがあなたの本当の姿です。`);
-  if (a[5]) strengths.push(`「${extractKeyword(a[5])}」を大切にし続けているあなたは、すでに自分の核心を知っている人です。`);
-
-  parts.push(strengths.length > 0 ? strengths[0] : 'あなたの中にある感覚は、これまでの経験が育ててきた、かけがえのない宝物です。');
 
   // 疲れた自分への眼差し
   if (a[6]) {
-    parts.push(`疲れたとき「${extractKeyword(a[6])}」になってしまうのは、弱さではありません。それだけ、あなたが精一杯生きてきた証です。`);
+    parts.push('疲れたとき、思わず出てしまう自分の姿がある。\nそれは弱さではありません。それだけ、あなたが毎日を精一杯生きてきたということです。');
   }
 
-  // 理想・未来
+  // 理想の一日・未来への橋渡し
   if (a[7]) {
-    parts.push(`「${extractKeyword(a[7])}」——そんな一日を、あなたはもう十分に deserve しています。`);
+    parts.push('「本当はこんな一日を過ごしたい」という感覚があるということは、あなたはまだ、自分の望みを知っているということ。\nその感覚を、どうか手放さないでください。');
   } else if (a[1]) {
-    parts.push(`5年後の自分に「${extractKeyword(a[1])}」と聞きたいと思っているあなたは、その答えを自分の中にもう持っています。`);
+    parts.push('5年後の自分に聞いてみたいことがある——そう思えるということは、あなたはまだ未来を信じているということです。\nその問いの答えは、きっと今のあなたの中にあります。');
   }
 
   // 言えていないこと
   if (a[8]) {
-    parts.push(`「${extractKeyword(a[8])}」——それを感じていいんです。あなたが嬉しいと思うことに、遠慮しなくていい。`);
+    parts.push('嬉しいと感じていることがあるのに、なかなか言えずにいる。\nそんな自分に、少しだけ許可を出してみてください。感じていいんです。喜んでいいんです。');
   }
 
-  // 自分への一言
+  // 自分への一言（最後のQ10をそのまま活かす）
   if (a[9]) {
-    parts.push(`「${a[9]}」——その言葉をかけてあげられるあなたは、もうすでに、自分に還る道を歩き始めています。`);
+    parts.push(`「${a[9]}」\nその言葉を、今日の自分にかけてあげられたあなたへ。\nあなたはもう、自分に還る道を歩き始めています。`);
+  } else {
+    parts.push('自分に優しくすることを、少しだけ練習してみてください。\nその小さな一歩が、本当の自分への帰り道になります。');
   }
 
   // 結び
   const endings = [
-    'Courageは、その一歩を一緒に歩く場所です。',
-    '次は、仲間と一緒にその続きを歩きませんか。Courageで待っています。',
-    'あなたのペースで、Courageでその歩みを続けていきましょう。',
+    'Courageは、その道を一緒に歩く場所です。',
+    'あなたの歩みを、仲間と一緒に続けていきませんか。Courageで待っています。',
+    'ひとりで抱えなくていい。Courageには、同じ問いを持つ仲間がいます。',
   ];
   parts.push(endings[answered % 3]);
 
